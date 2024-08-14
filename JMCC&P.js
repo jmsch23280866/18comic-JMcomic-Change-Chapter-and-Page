@@ -23,7 +23,7 @@
 // @license      MIT
 // ==/UserScript==
 
-// 此腳本靈感取自https://greasyfork.org/scripts/453029
+// 此腳本靈感取自 https://greasyfork.org/scripts/453029
 
 (function() {
     'use strict';
