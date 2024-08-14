@@ -3,7 +3,7 @@
 // @name:zh-TW   禁漫天堂-快速切換上下話與頁面
 // @name:zh-CN   禁漫天堂-快速切换上下话与页面
 // @namespace    https://github.com/jmsch23280866
-// @version      0.1
+// @version      0.2
 // @description        使用 Shift + ([←] 或 [A]) 切換上一話，Shift + ([→] 或 [D]) 切換下一話。使用 [←] 或 [A] 切換上一頁，使用 [→] 或 [D] 切換下一頁。(此腳本由ChatGPT協助撰寫)
 // @description:zh-TW  使用 Shift + ([←] 或 [A]) 切換上一話，Shift + ([→] 或 [D]) 切換下一話。使用 [←] 或 [A] 切換上一頁，使用 [→] 或 [D] 切換下一頁。(此腳本由ChatGPT協助撰寫)
 // @description:zh-CN  使用 Shift + ([←] 或 [A]) 切换上一话，Shift + ([→] 或 [D]) 切换下一话。使用 [←] 或 [A] 切换上一页，使用 [→] 或 [D] 切换下一页。(此脚本由ChatGPT协助撰写)
@@ -25,7 +25,7 @@
 
 // 此腳本靈感取自 https://greasyfork.org/scripts/453029
 
-(function() {
+(function () {
     'use strict';
 
     // 快取常用的元素選擇器
@@ -36,7 +36,6 @@
     // 事件處理函數
     const handleKeyDown = (e) => {
         e = e || window.event;
-
         let actionTaken = false;
 
         // 判斷是否切換上一話與下一話
@@ -46,7 +45,7 @@
         } else if (e.shiftKey && (e.key === 'ArrowLeft' || e.key.toLowerCase() === 'a')) {
             prevChapterBtn?.click();
             actionTaken = true;
-        }
+        } 
         // 返回漫畫簡介
         else if (e.key === 'Escape') {
             albumListBtn?.click();
@@ -58,12 +57,23 @@
         }
     };
 
-    // 實現上下頁切換
+    // 實現上下頁切換，並檢查是否在第一頁或最後一頁
     const handlePageSwitch = (event) => {
+        const prevPageBtn = document.querySelector("#wrapper > div:nth-child(24) > div:nth-child(3) > div > div > div.panel-body > div > div > div.owl-nav > button.owl-prev");
+        const nextPageBtn = document.querySelector("#wrapper > div:nth-child(24) > div:nth-child(3) > div > div > div.panel-body > div > div > div.owl-nav > button.owl-next");
+
         if (event.key === 'A' || event.key === 'ArrowLeft' || event.key.toLowerCase() === 'a') {
-            document.querySelector("#wrapper > div:nth-child(24) > div:nth-child(3) > div > div > div.panel-body > div > div > div.owl-nav > button.owl-prev").click();
+            if (prevPageBtn && prevPageBtn.classList.contains('disabled')) {
+                prevChapterBtn?.click(); // 當在第一頁時，切換到上一話
+            } else {
+                prevPageBtn?.click(); // 否則切換到上一頁
+            }
         } else if (event.key === 'D' || event.key === 'ArrowRight' || event.key.toLowerCase() === 'd') {
-            document.querySelector("#wrapper > div:nth-child(24) > div:nth-child(3) > div > div > div.panel-body > div > div > div.owl-nav > button.owl-next").click();
+            if (nextPageBtn && nextPageBtn.classList.contains('disabled')) {
+                nextChapterBtn?.click(); // 當在最後一頁時，切換到下一話
+            } else {
+                nextPageBtn?.click(); // 否則切換到下一頁
+            }
         }
     };
 
