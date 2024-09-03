@@ -3,7 +3,7 @@
 // @name:zh-TW   禁漫天堂-快速切換上下話與頁面
 // @name:zh-CN   禁漫天堂-快速切换上下话与页面
 // @namespace    https://github.com/jmsch23280866
-// @version      0.2
+// @version      0.3
 // @description        使用 Shift + ( ← 或 A ) 切換上一話，Shift + ( → 或 D ) 切換下一話。使用 [←] 或 [A] 切換上一頁，使用 [→] 或 [D] 切換下一頁。(此腳本由ChatGPT協助撰寫)
 // @description:zh-TW  使用 Shift + ( ← 或 A ) 切換上一話，Shift + ( → 或 D ) 切換下一話。使用 [←] 或 [A] 切換上一頁，使用 [→] 或 [D] 切換下一頁。(此腳本由ChatGPT協助撰寫)
 // @description:zh-CN  使用 Shift + ( ← 或 A ) 切换上一话，Shift + ( → 或 D ) 切换下一话。使用 [←] 或 [A] 切换上一页，使用 [→] 或 [D] 切换下一页。(此脚本由ChatGPT协助撰写)
@@ -32,6 +32,7 @@
     const prevChapterBtn = document.querySelector('.fa-angle-double-left.fa');
     const nextChapterBtn = document.querySelector('.fa-angle-double-right.fa');
     const albumListBtn = document.querySelector('.fa-list-alt.far');
+    const navTabs = document.querySelector('ul.nav-tabs');
 
     // 事件處理函數
     const handleKeyDown = (e) => {
@@ -77,8 +78,51 @@
         }
     };
 
+    // 檢查元素是否在螢幕可見範圍內
+    const isElementInViewport = (el) => {
+        const rect = el.getBoundingClientRect();
+        return (
+            rect.top >= 0 &&
+            rect.left >= 0 &&
+            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+        );
+    };
+
+    // 節流函數
+    const throttle = (func, limit) => {
+        let lastFunc;
+        let lastRan;
+        return function() {
+            const context = this;
+            const args = arguments;
+            if (!lastRan) {
+                func.apply(context, args);
+                lastRan = Date.now();
+            } else {
+                clearTimeout(lastFunc);
+                lastFunc = setTimeout(function() {
+                    if ((Date.now() - lastRan) >= limit) {
+                        func.apply(context, args);
+                        lastRan = Date.now();
+                    }
+                }, limit - (Date.now() - lastRan));
+            }
+        };
+    };
+
+    // 滾輪事件處理函數
+    const handleWheel = (event) => {
+        const nextPageBtn = document.querySelector("#wrapper > div:nth-child(24) > div:nth-child(3) > div > div > div.panel-body > div > div > div.owl-nav > button.owl-next");
+
+        if (isElementInViewport(navTabs) && event.deltaY > 0) {
+            nextPageBtn?.click();
+        }
+    };
+
     // 綁定鍵盤事件
     document.addEventListener('keydown', handleKeyDown);
     document.addEventListener('keydown', handlePageSwitch);
+    document.addEventListener('wheel', throttle(handleWheel, 200)); // 使用節流函數
 
 })();
