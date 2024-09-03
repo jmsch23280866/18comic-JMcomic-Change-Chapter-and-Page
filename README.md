@@ -12,4 +12,4 @@ Shift + ([→] 或 [D]) 切換下一話 <br/>
 ![動畫](https://github.com/user-attachments/assets/e467f70b-6a4a-4834-9aa8-348701abacfe)
 
 
-也推薦使用PC客戶端也有類似效果：[JMComic-qt](https://github.com/tonquer/JMComic-qt)
+也推薦試試PC客戶端：[JMComic-qt](https://github.com/tonquer/JMComic-qt)
