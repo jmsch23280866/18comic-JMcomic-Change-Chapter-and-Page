@@ -3,7 +3,7 @@
 // @name:zh-TW   禁漫天堂-快速切換上下話與頁面
 // @name:zh-CN   禁漫天堂-快速切换上下话与页面
 // @namespace    https://github.com/jmsch23280866
-// @version      1.0.1
+// @version      1.1
 // @description        使用 Shift + ( ← 或 A ) 切換上一話，Shift + ( → 或 D ) 切換下一話。使用 [←] 或 [A] 切換上一頁，使用 [→] 或 [D] 切換下一頁。(此腳本由ChatGPT協助撰寫)
 // @description:zh-TW  使用 Shift + ( ← 或 A ) 切換上一話，Shift + ( → 或 D ) 切換下一話。使用 [←] 或 [A] 切換上一頁，使用 [→] 或 [D] 切換下一頁。(此腳本由ChatGPT協助撰寫)
 // @description:zh-CN  使用 Shift + ( ← 或 A ) 切换上一话，Shift + ( → 或 D ) 切换下一话。使用 [←] 或 [A] 切换上一页，使用 [→] 或 [D] 切换下一页。(此脚本由ChatGPT协助撰写)
@@ -33,9 +33,12 @@
     const nextChapterBtn = document.querySelector('.fa-angle-double-right.fa');
     const albumListBtn = document.querySelector('.fa-list-alt.far');
     const navTabs = document.querySelector('ul.nav-tabs');
+    const topNav = document.querySelector('div[class="top-nav"]');
+    const comicTopNav = document.querySelector('div[id="Comic_Top_Nav"]');
 
     let scrollAmount = 0;
     let isScrolling = false;
+    let lastScrollTop = 0;
 
     // 事件處理函數
     const handleKeyDown = (e) => {
@@ -153,11 +156,27 @@
         }
     };
 
+    // 滾動事件處理函數
+    const handleScroll = () => {
+        const currentScrollTop = window.scrollY || document.documentElement.scrollTop;
+        if (currentScrollTop > lastScrollTop) {
+            // 向下滾動，隱藏導航欄
+            topNav.style.transform = 'translateY(-100%)';
+            comicTopNav.style.transform = 'translateY(-100%)';
+        } else {
+            // 向上滾動，顯示導航欄
+            topNav.style.transform = 'translateY(0)';
+            comicTopNav.style.transform = 'translateY(0)';
+        }
+        lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop; // 避免負值
+    };
+
     // 綁定鍵盤事件
     document.addEventListener('keydown', handleKeyDown);
     document.addEventListener('keydown', handlePageSwitch);
     document.addEventListener('keydown', handleSWKeys);
     document.addEventListener('keyup', stopScroll);
     document.addEventListener('wheel', throttle(handleWheel, 500)); // 使用節流函數
+    window.addEventListener('scroll', throttle(handleScroll, 100));
 
 })();
