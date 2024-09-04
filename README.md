@@ -7,9 +7,11 @@ Shift + ([←] 或 [A]) 切換上一話 <br/>
 Shift + ([→] 或 [D]) 切換下一話 <br/>
 [←] 或 [A] 切換上一頁 <br/>
 [→] 或 [D] 切換下一頁 <br/>
+[W] 向上滾動、[S] 向下滾動 <br/>
 
-2024/09/03(v0.3.1) 新增功能:(分頁閱讀模式)滑鼠滾輪滾至底部自動翻頁 <br/>
+2024/09/03(v0.3.1) 新增功能:於分頁閱讀模式可實現滑鼠滾輪滾至底部自動翻頁 <br/>
 ![動畫](https://github.com/user-attachments/assets/e467f70b-6a4a-4834-9aa8-348701abacfe)
 
+2024/09/04(v1.0) 整體功能完善 <br/>
 
 也推薦試試PC客戶端：[JMComic-qt](https://github.com/tonquer/JMComic-qt)
