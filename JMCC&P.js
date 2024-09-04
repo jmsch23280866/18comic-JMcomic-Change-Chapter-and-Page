@@ -3,7 +3,7 @@
 // @name:zh-TW   禁漫天堂-快速切換上下話與頁面
 // @name:zh-CN   禁漫天堂-快速切换上下话与页面
 // @namespace    https://github.com/jmsch23280866
-// @version      0.3.1
+// @version      0.5.7
 // @description        使用 Shift + ( ← 或 A ) 切換上一話，Shift + ( → 或 D ) 切換下一話。使用 [←] 或 [A] 切換上一頁，使用 [→] 或 [D] 切換下一頁。(此腳本由ChatGPT協助撰寫)
 // @description:zh-TW  使用 Shift + ( ← 或 A ) 切換上一話，Shift + ( → 或 D ) 切換下一話。使用 [←] 或 [A] 切換上一頁，使用 [→] 或 [D] 切換下一頁。(此腳本由ChatGPT協助撰寫)
 // @description:zh-CN  使用 Shift + ( ← 或 A ) 切换上一话，Shift + ( → 或 D ) 切换下一话。使用 [←] 或 [A] 切换上一页，使用 [→] 或 [D] 切换下一页。(此脚本由ChatGPT协助撰写)
@@ -34,9 +34,11 @@
     const albumListBtn = document.querySelector('.fa-list-alt.far');
     const navTabs = document.querySelector('ul.nav-tabs');
 
+    let scrollAmount = 0;
+    let isScrolling = false;
+
     // 事件處理函數
     const handleKeyDown = (e) => {
-        e = e || window.event;
         let actionTaken = false;
 
         // 判斷是否切換上一話與下一話
@@ -75,6 +77,37 @@
             } else {
                 nextPageBtn?.click(); // 否則切換到下一頁
             }
+        }
+    };
+
+    // S 和 W 鍵的事件處理函數
+    const handleSWKeys = (event) => {
+        if (isScrolling) return; // 如果正在滾動，則返回
+
+        if (event.key.toLowerCase() === 'w') {
+            scrollAmount = -400; // 向上平滑滾動
+        } else if (event.key.toLowerCase() === 's') {
+            scrollAmount = 400; // 向下平滑滾動
+        }
+        isScrolling = true;
+        smoothScroll();
+    };
+
+    // 平滑滾動函數
+    const smoothScroll = () => {
+        window.scrollBy({
+            top: scrollAmount,
+            behavior: 'smooth'
+        });
+        setTimeout(() => {
+            isScrolling = false;
+        }, 500); // 等待滾動完成後重置滾動狀態
+    };
+
+    // 停止滾動
+    const stopScroll = (event) => {
+        if (event.key.toLowerCase() === 'w' || event.key.toLowerCase() === 's') {
+            scrollAmount = 0;
         }
     };
 
@@ -123,6 +156,8 @@
     // 綁定鍵盤事件
     document.addEventListener('keydown', handleKeyDown);
     document.addEventListener('keydown', handlePageSwitch);
+    document.addEventListener('keydown', handleSWKeys);
+    document.addEventListener('keyup', stopScroll);
     document.addEventListener('wheel', throttle(handleWheel, 500)); // 使用節流函數
 
 })();
