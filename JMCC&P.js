@@ -3,7 +3,7 @@
 // @name:zh-TW   禁漫天堂-快速切換上下話與頁面
 // @name:zh-CN   禁漫天堂-快速切换上下话与页面
 // @namespace    https://github.com/jmsch23280866
-// @version      0.5.7
+// @version      1.0
 // @description        使用 Shift + ( ← 或 A ) 切換上一話，Shift + ( → 或 D ) 切換下一話。使用 [←] 或 [A] 切換上一頁，使用 [→] 或 [D] 切換下一頁。(此腳本由ChatGPT協助撰寫)
 // @description:zh-TW  使用 Shift + ( ← 或 A ) 切換上一話，Shift + ( → 或 D ) 切換下一話。使用 [←] 或 [A] 切換上一頁，使用 [→] 或 [D] 切換下一頁。(此腳本由ChatGPT協助撰寫)
 // @description:zh-CN  使用 Shift + ( ← 或 A ) 切换上一话，Shift + ( → 或 D ) 切换下一话。使用 [←] 或 [A] 切换上一页，使用 [→] 或 [D] 切换下一页。(此脚本由ChatGPT协助撰写)
@@ -62,8 +62,8 @@
 
     // 實現上下頁切換，並檢查是否在第一頁或最後一頁
     const handlePageSwitch = (event) => {
-        const prevPageBtn = document.querySelector("#wrapper > div:nth-child(24) > div:nth-child(3) > div > div > div.panel-body > div > div > div.owl-nav > button.owl-prev");
-        const nextPageBtn = document.querySelector("#wrapper > div:nth-child(24) > div:nth-child(3) > div > div > div.panel-body > div > div > div.owl-nav > button.owl-next");
+        const prevPageBtn = document.querySelector("button.owl-prev");
+        const nextPageBtn = document.querySelector("button.owl-next");
 
         if (event.key === 'A' || event.key === 'ArrowLeft' || event.key.toLowerCase() === 'a') {
             if (prevPageBtn && prevPageBtn.classList.contains('disabled')) {
@@ -146,7 +146,7 @@
 
     // 滾輪事件處理函數
     const handleWheel = (event) => {
-        const nextPageBtn = document.querySelector("#wrapper > div:nth-child(24) > div:nth-child(3) > div > div > div.panel-body > div > div > div.owl-nav > button.owl-next");
+        const nextPageBtn = document.querySelector("button.owl-next");
 
         if (isElementInViewport(navTabs) && event.deltaY > 0) {
             nextPageBtn?.click();
